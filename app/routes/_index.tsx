@@ -1,18 +1,18 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-// import { App } from "octokit";
+import { App } from "octokit";
 import { useOptionalUser } from "~/utils";
 
 export let loader: LoaderFunction = async () => {
-  // let app = new App({
-  //   appId: process.env.GITHUB_APP_ID!,
-  //   privateKey: process.env.GITHUB_APP_SECRET!,
-  // });
-  // let data = await app.octokit.request("/app");
+  let app = new App({
+    appId: process.env.GITHUB_APP_ID!,
+    privateKey: process.env.GITHUB_APP_SECRET!,
+  });
+  let data = await app.octokit.request("/app");
   return json({
     foo: "bar",
-    // data,
+    data,
   });
 };
 
