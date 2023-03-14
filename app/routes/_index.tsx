@@ -1,9 +1,25 @@
-import { Link } from "@remix-run/react";
-
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { App } from "octokit";
 import { useOptionalUser } from "~/utils";
+
+export let loader: LoaderFunction = async () => {
+  let app = new App({
+    appId: process.env.GITHUB_APP_ID!,
+    privateKey: process.env.GITHUB_APP_SECRET!,
+  });
+  let data = await app.octokit.request("/app");
+  return json({
+    foo: "bar",
+    data,
+  });
+};
 
 export default function Index() {
   const user = useOptionalUser();
+  let data = useLoaderData();
+  console.log("👉 --------> - data:", data);
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
